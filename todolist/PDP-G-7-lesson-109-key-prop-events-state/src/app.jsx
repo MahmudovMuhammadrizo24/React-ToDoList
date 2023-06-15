@@ -1,9 +1,11 @@
 import React from 'react';
+import './main.scss';
 
 class App extends React.Component {
 	state = {
 		todos: [],
-		newTodo: ''
+		newTodo: '',
+		isTextDecorated: false
 	};
 
 	handleInputChange = (event) => {
@@ -28,34 +30,41 @@ class App extends React.Component {
 		});
 	};
 
+	handleButtonClick = () => {
+		this.setState((prevState) => ({
+			isTextDecorated: !prevState.isTextDecorated
+		}));
+	};
+
 	render() {
-		const { todos, newTodo } = this.state;
+		const { todos, newTodo, isTextDecorated } = this.state;
+		const textClassName = isTextDecorated ? 'decorated-text' : 'undecorated-text';
 
 		return (
-			<div>
+			<div className='container'>
 				<h1>Todo List</h1>
-				<div>
-					<input
-						type="text"
-						value={newTodo}
-						onChange={this.handleInputChange}
-						placeholder="Enter a new todo"
-					/>
-					<button onClick={this.handleAddTodo}>Add Todo</button>
-				</div>
-				<ul>
+				<div className='todolist'>
+					<div className='inputBox'>
+						<input
+							type="text"
+							value={newTodo}
+							onChange={this.handleInputChange}
+							placeholder="Enter a new todo"
+						/>
+						<button className='add' onClick={this.handleAddTodo}>Add</button>
+					</div>
+
 					{todos.map((todo, index) => (
-						<li key={index}>
+						<div className={textClassName} key={index}>
 							{todo}
-							<button onClick={() => this.handleDeleteTodo(index)}>Delete</button>
-						</li>
+							<button className='click' onClick={this.handleButtonClick}>✅</button>
+							<button className='click1' onClick={() => this.handleDeleteTodo(index)}>❌</button>
+						</div>
 					))}
-				</ul>
+				</div>
 			</div>
 		);
 	}
 }
-
-
 
 export default App;
